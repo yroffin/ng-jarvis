@@ -1,0 +1,40 @@
+<app-jarvis-toolbar-resource [notified]="this" [crud]="true" [tasks]="[{'task':'download','icon':'fa-cloud-upload','label':'Télécharger cette configuration'},{'task':'reload','icon':'fa-cloud-download','label':'Recharger cette configuration (sans sauver)'},{'task':'restore','icon':'fa-briefcase','label':'Mise à jour de la configuration courante'}]"></app-jarvis-toolbar-resource>
+
+<input #fileInput style="display:none" type="file" (change)="onChange($event)">
+
+<div *ngIf="mySnapshot">
+  <mat-tab-group>
+    <mat-tab label="Entête">
+      <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-6">
+            <mat-input-container class="input-full-width">
+              <input matInput placeholder="Nom" [(ngModel)]="mySnapshot.name">
+            </mat-input-container>
+          </div>
+          <div class="ui-grid-col-6">
+            <mat-input-container class="input-full-width">
+              <input matInput placeholder="Icône" [(ngModel)]="mySnapshot.icon">
+            </mat-input-container>
+          </div>
+        </div>
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-12">
+            <pre><code [innerHtml]="hightlight(mySnapshot.json)"></code></pre>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Output">
+      <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-12">
+            <pre><code>
+              <p *ngFor="let item of mySnapshot.output">{{ item }}</p>
+            </code></pre>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

@@ -1,0 +1,12 @@
+.example-container {
+  width: 100%;
+  height: 100vh;
+}
+
+.example-sidenav-content {
+  display: flex;
+}
+
+.example-sidenav {
+  width: 80%;
+}
