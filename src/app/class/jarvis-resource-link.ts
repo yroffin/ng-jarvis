@@ -116,13 +116,13 @@ export class JarvisResourceLink<T extends ResourceBean> {
    */
   public dropLink(linked: T, owner: string, elements: Array<T>, service: JarvisDefaultLinkResource<T>): void {
     let deleted;
-    service.Delete(owner, linked.id, linked.instance)
+    service.Delete(owner, linked.id, linked.extended.instance)
       .subscribe(
       (data: T) => deleted = data,
       error => this.logger.error("dropLink", error),
       () => {
         _.remove(elements, function (element) {
-          return element.id === linked.id && element.instance === linked.instance;
+          return element.id === linked.id && element.instance === linked.extended.instance;
         });
       });
   }
@@ -132,13 +132,13 @@ export class JarvisResourceLink<T extends ResourceBean> {
    */
   public dropHrefLink(linked: T, owner: string, elements: Array<T>, href: string, service: JarvisDefaultLinkResource<T>): void {
     let deleted;
-    service.DeleteWithFilter(owner, linked.id, linked.instance, 'href=' + href)
+    service.DeleteWithFilter(owner, linked.id, linked.extended.instance, 'href=' + href)
       .subscribe(
       (data: T) => deleted = data,
       error => this.logger.error("dropHrefLink", error),
       () => {
         _.remove(elements, function (element) {
-          return element.id === linked.id && element.instance === linked.instance;
+          return element.id === linked.id && element.instance === linked.extended.instance;
         });
       });
   }
@@ -148,9 +148,11 @@ export class JarvisResourceLink<T extends ResourceBean> {
    */
   public updateLink(linked: T, owner: string, service: JarvisDefaultLinkResource<T>): void {
     let deleted;
-    service.Update(owner, linked.id, linked.instance, linked.extended)
+    service.Update(owner, linked.id, linked.extended.instance, linked.extended)
       .subscribe(
-      (data: T) => deleted = data,
+      (data: T) => {
+        deleted = data
+      },
       error => this.logger.error("updateLink", error),
       () => {
       });

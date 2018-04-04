@@ -43,7 +43,7 @@
           </ng-template>
         </p-column>
         <p-column field="id" header="Id"></p-column>
-        <p-column field="instance" header="Instance"></p-column>
+        <p-column field="extended.instance" header="Instance"></p-column>
         <p-column field="name" header="Nom"></p-column>
         <p-column header="Action">
           <ng-template let-command="rowData" pTemplate="body">
@@ -98,7 +98,7 @@
             </div>
             <div class="ui-grid-col-4">
               <mat-input-container class="input-full-width">
-                <input matInput placeholder="Instance de la commande" [(ngModel)]="myCommand.instance" disabled>
+                <input matInput placeholder="Instance de la commande" [(ngModel)]="myCommand.extended.instance" disabled>
               </mat-input-container>
             </div>
             <div class="ui-grid-col-4">
