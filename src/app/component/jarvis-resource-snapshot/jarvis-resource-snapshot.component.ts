@@ -160,7 +160,11 @@ export class JarvisResourceSnapshotComponent extends JarvisResource<SnapshotBean
    */
   public hightlight(body: string): string {
     if(body) {
-      return Prism.highlight(body, Prism.languages.javascript);
+      let raw = body
+      if((<any>body).CommandBean) {
+        raw = JSON.stringify(body, null, 2)
+      }
+      return Prism.highlight(raw, Prism.languages.javascript);
     } else {
       return "";
     }
