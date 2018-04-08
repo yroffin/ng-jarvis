@@ -84,6 +84,7 @@ export class JarvisResourceCommandComponent extends JarvisResource<CommandBean> 
     this.types.push({ label: 'Shell script', value: 'SHELL' });
     this.types.push({ label: 'Command script', value: 'COMMAND' });
     this.types.push({ label: 'Groovy script', value: 'GROOVY' });
+    this.types.push({ label: 'Lua script', value: 'LUA' });
     this.types.push({ label: 'Zway command', value: 'ZWAY' });
     this.types.push({ label: 'Chacon command', value: 'CHACON' });
     this.types.push({ label: 'Slack notification', value: 'SLACK' });
