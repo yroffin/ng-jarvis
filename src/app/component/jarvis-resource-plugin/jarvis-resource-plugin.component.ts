@@ -73,12 +73,15 @@ export class JarvisResourcePluginComponent extends JarvisResource<PluginBean> im
 
   private jarvisCommandLink: JarvisResourceLink<CommandBean>;
 
+  protected nodes: any;
+  protected edges: any;
+
   /**
    * constructor
    */
   constructor(
     private _route: ActivatedRoute,
-    private sanitizer:DomSanitizer,
+    private sanitizer: DomSanitizer,
     private _router: Router,
     private _jarvisConfigurationService: JarvisConfigurationService,
     private _pluginService: JarvisDataPluginService,
@@ -179,9 +182,13 @@ export class JarvisResourcePluginComponent extends JarvisResource<PluginBean> im
       this.myPlugin.commands = [];
       (new JarvisResourceLink<CommandBean>(this.logger)).loadLinksWithCallback(resource.id, this.myPlugin.commands, this._pluginService.allLinkedCommand, (elements) => {
         this.myPlugin.commands = elements;
-        this._pluginService.TaskAsXml(this.myPlugin.id, 'uml', this.myData)
+        this._pluginService.Task(this.myPlugin.id, 'graph', this.myData)
           .subscribe(
-          (result: any) => this.myDetail = result,
+          (result: any) => {
+            this.myDetail = result
+            this.nodes = result.nodes
+            this.edges = result.edges
+          },
           error => console.log(error),
           () => {
             console.log(this.myDetail);

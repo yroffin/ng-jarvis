@@ -28,7 +28,7 @@ import { PickerBean } from '../model/picker-bean';
  * notify interface
  */
 export interface NotifyCallback<T extends ResourceBean> {
-    notify(action: PickerBean, resource: T): void 
+    notify(action: PickerBean, resource: T): void
 };
 
 /**
@@ -80,22 +80,22 @@ export class JarvisResource<T extends ResourceBean> {
      */
     public init(that: NotifyCallback<T>): void {
         this.route.params
-        .map(params => params['id'])
-        .subscribe((id) => {
-            this.myJarvisResource.GetSingle(id)
-            .subscribe(
-                (data: T) => this.setResource(data),
-                error => console.log(error),
-                () => {
-                    /**
-                     * complete resource
-                     */
-                    let picker: PickerBean = new PickerBean();
-                    picker.action = 'complete';
-                    that.notify(picker, this.getResource());
-                }
-            );
-        });
+            .map(params => params['id'])
+            .subscribe((id) => {
+                this.myJarvisResource.GetSingle(id)
+                    .subscribe(
+                    (data: T) => this.setResource(data),
+                    error => console.log(error),
+                    () => {
+                        /**
+                         * complete resource
+                         */
+                        let picker: PickerBean = new PickerBean();
+                        picker.action = 'complete';
+                        that.notify(picker, this.getResource());
+                    }
+                    );
+            });
     }
 
     /**
@@ -114,7 +114,7 @@ export class JarvisResource<T extends ResourceBean> {
             (data: T) => data,
             error => console.log(error),
             () => {
-                if(callback) {
+                if (callback) {
                     callback();
                 }
             });

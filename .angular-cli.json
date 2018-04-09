@@ -20,6 +20,7 @@
       "prefix": "app",
       "styles": [
         "styles.css",
+        "../node_modules/vis/dist/vis.min.css",
         "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
         "../node_modules/primeng/resources/themes/cruze/theme.css",
         "../node_modules/primeng/resources/primeng.min.css",
@@ -27,6 +28,7 @@
         "../node_modules/prismjs/themes/prism.css"
       ],
       "scripts": [
+        "../node_modules/vis/dist/vis.min.js",
         "../node_modules/prismjs/prism.js",
         "../node_modules/chart.js/dist/Chart.js"
       ],

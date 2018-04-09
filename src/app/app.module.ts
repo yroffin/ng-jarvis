@@ -136,6 +136,7 @@ import { JarvisBrokerComponent } from './component/jarvis-broker/jarvis-broker.c
 import { JarvisResourceProcessComponent } from './component/jarvis-resource-process/jarvis-resource-process.component';
 import { JarvisResourceModelComponent } from './component/jarvis-resource-model/jarvis-resource-model.component';
 import { JarvisSceneEditorComponent } from './component/jarvis-scene-editor/jarvis-scene-editor.component';
+import { JarvisGraphComponent } from './widget/jarvis-graph/jarvis-graph.component';
 
 /**
  * default route definition
@@ -208,7 +209,8 @@ const appRoutes: Routes = [
     JarvisBrokerComponent,
     JarvisResourceProcessComponent,
     JarvisResourceModelComponent,
-    JarvisSceneEditorComponent
+    JarvisSceneEditorComponent,
+    JarvisGraphComponent
   ],
   entryComponents: [
     JarvisPickerComponent
