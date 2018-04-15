@@ -82,7 +82,7 @@ export class JarvisTileComponent implements OnInit {
   public getTemplate(device: DeviceBean): string {
     let template: string = device.template;
     let data = device.render;
-    _.forEach(this.parse(device.template), function (key) {
+    _.forEach(this.parse(device.template), (key) => {
       try {
         let parsed = template.replace("{{" + key + "}}", eval(key));
         template = parsed;

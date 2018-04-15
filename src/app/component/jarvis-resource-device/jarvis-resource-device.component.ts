@@ -105,6 +105,23 @@ export class JarvisResourceDeviceComponent extends JarvisResource<DeviceBean> im
     let output: any;
     this._deviceService.Task(this.myDevice.id, 'render', {})
       .subscribe(
+      (result: any) => {
+        output = result
+        this.myDevice.render = output
+      },
+      error => console.log(error),
+      () => {
+      }
+      );
+  }
+
+  /**
+   * task action
+   */
+  public execute(): void {
+    let output: any;
+    this._deviceService.Task(this.myDevice.id, 'execute', {})
+      .subscribe(
       (result: any) => output = result,
       error => console.log(error),
       () => {
