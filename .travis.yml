@@ -1,0 +1,30 @@
+sudo: required
+dist: trusty
+language: node_js
+env:
+  - GIMME_OS=linux GIMME_ARCH=amd64 PATH=$TRAVIS_BUILD_DIR/linux_amd64:$PATH
+node_js:
+  - "iojs"
+  - "7"
+before_install:
+  # Correct rake bug
+  - RAKE=`which rake`
+  - mv `which rake` `which rake`.old
+  - touch ${RAKE}
+  - chmod 755 ${RAKE}
+install:
+  # Build
+  - cd $TRAVIS_BUILD_DIR
+  - make all
+  - find ${TRAVIS_BUILD_DIR}
+deploy:
+  provider: releases
+  overwrite: true
+  api_key: "$GITHUB_OAUTH2_KEY"
+  file:
+  - "${TRAVIS_BUILD_DIR}/dist.tar"
+  skip_cleanup: true
+  on:
+    tags: true
+    all_branches: true
+after_deploy: echo "deploiement terminé"

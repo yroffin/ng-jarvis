@@ -69,8 +69,10 @@ export class JarvisGraphComponent implements OnInit, AfterViewInit {
     this._edges = val;
   }
 
-  private update() {
-
+  /**
+   * update edge
+   */
+  public update() {
     // create a network
     var container = document.getElementById('mynetwork');
     var data = {
