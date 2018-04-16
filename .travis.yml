@@ -16,7 +16,7 @@ install:
   # Build
   - cd $TRAVIS_BUILD_DIR
   - make all
-  - find ${TRAVIS_BUILD_DIR}
+  - ls -lrt
 deploy:
   provider: releases
   overwrite: true
