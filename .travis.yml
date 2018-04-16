@@ -4,7 +4,7 @@ language: node_js
 env:
   - GIMME_OS=linux GIMME_ARCH=amd64 PATH=$TRAVIS_BUILD_DIR/linux_amd64:$PATH
 node_js:
-  - "7"
+  - "8"
 before_install:
   # Correct rake bug
   - RAKE=`which rake`
