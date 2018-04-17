@@ -11,3 +11,9 @@ ${WHERE}/dist/index.html:
 	npm run build
 	ls -lrt dist
 	cd dist && tar cvf ../dist.tar *
+
+tag:
+	git config --local user.name "Yannick Roffin"
+	git config --local user.email "yroffin@gmail.com"
+	git tag "$(date +'%Y%m%d-%H%M%S')"
+	git push --tags
