@@ -5,6 +5,11 @@ env:
   - GIMME_OS=linux GIMME_ARCH=amd64 PATH=$TRAVIS_BUILD_DIR/linux_amd64:$PATH
 node_js:
   - "8"
+before_deploy:
+  # Set up git user name and tag this commit
+  - git config --local user.name "Yannick Roffin"
+  - git config --local user.email "yroffin@gmail.com"
+  - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
 before_install:
   # Correct rake bug
   - RAKE=`which rake`
