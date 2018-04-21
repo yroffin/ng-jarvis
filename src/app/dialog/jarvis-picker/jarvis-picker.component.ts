@@ -15,7 +15,7 @@
  */
 
 import { Component, Input, ViewChild, OnInit, AfterViewInit } from '@angular/core';
-import { TreeNode, TREE_ACTIONS, KEYS, IActionMapping } from 'angular2-tree-component';
+import { TreeNode, TREE_ACTIONS, KEYS, IActionMapping } from 'angular-tree-component';
 import * as _ from 'lodash';
 
 import { LoggerService } from '../../service/logger.service';
