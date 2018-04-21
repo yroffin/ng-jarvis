@@ -20,7 +20,6 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { WindowRef } from '../../service/jarvis-utils.service';
 import { JarvisSecurityService } from '../../service/jarvis-security.service';
-import { JarvisDataStoreService } from '../../service/jarvis-data-store.service';
 import { JarvisLoaderService } from '../../service/jarvis-loader.service';
 
 /**
@@ -41,7 +40,6 @@ export class JarvisLoginComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private windowService: WindowRef,
     private jarvisSecurityService: JarvisSecurityService,
-    private jarvisDataStoreService: JarvisDataStoreService,
     private jarvisLoaderService: JarvisLoaderService) {
 
   }

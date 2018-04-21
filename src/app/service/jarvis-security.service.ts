@@ -15,8 +15,9 @@
  */
 
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/Rx';
+
 import { Router } from '@angular/router';
 import { Http, Response, Headers } from '@angular/http';
 

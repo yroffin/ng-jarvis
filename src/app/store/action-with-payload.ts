@@ -1,5 +1,5 @@
 /* 
- * Copyright 2016 Yannick Roffin.
+ * Copyright 2017 Yannick Roffin.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,11 @@
  * limitations under the License.
  */
 
-import { Injectable } from '@angular/core';
-import { LoggerService } from '../service/logger.service';
+import { Action } from '@ngrx/store';
 
-import * as THREE from 'three';
-import * as CANVAS from '../model/3d/canvas.model'
+export class ActionWithPayload<T> implements Action {
+  readonly type: string;
+  constructor(public payload: T) {
 
-@Injectable()
-export class JarvisCanvasService {
-
-  /**
-   * internal members
-   */
-  private scenes = new Map<string, CANVAS.Scene>();
-
-  /**
-   * constructor
-   */
-  constructor(private logger: LoggerService) {
   }
 }

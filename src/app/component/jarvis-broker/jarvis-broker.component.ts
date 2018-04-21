@@ -24,6 +24,7 @@ import { JarvisMqttService } from '../../service/jarvis-mqtt.service';
 
 import { Observable } from 'rxjs/Observable';
 import { MessageBean } from '../../model/broker/message-bean';
+import { BrokerStoreService } from '../../store/broker.store';
 
 @Component({
   selector: 'app-jarvis-broker',
@@ -32,48 +33,39 @@ import { MessageBean } from '../../model/broker/message-bean';
 })
 export class JarvisBrokerComponent implements OnInit {
 
-  @Input() myMessages: MessageBean[] = <MessageBean[]> [];
-  public messageObservable: Observable<MessageBean> = new Observable<MessageBean>();
+  @Input() myMessages: MessageBean[] = <MessageBean[]>[];
+  public messageStream: Store<MessageBean>;
 
   private ids: number = 0;
-  
+
   constructor(
     private store: Store<State<MessageBean>>,
-    private mqttService: JarvisMqttService
+    private mqttService: JarvisMqttService,
+    private brokerStoreService: BrokerStoreService
   ) {
     /**
       * register to store
       */
-      this.messageObservable = this.store.select<MessageBean>('Broker');
-      /**
-       * register to store update
-       */
-      this.messageObservable
-        .filter(item => {
-          if (item) {
-            if(item.topic && item.body) {
-              return true;
-            }
-            return false
-          } else {
-            return false
-          }
-        })
-        .subscribe((item) => {
-          let msg = new MessageBean();
-          msg.id = ''+(this.ids++);
-          msg.topic = item.topic;
-          try {
-            msg.body = JSON.stringify(item.body, null, '  ');
-          } catch (Exc) {
-            msg.body = item.body;
-          }
-          if(this.myMessages.length > 20) {
-            this.myMessages.shift()
-          }
-          this.myMessages.push(msg);
-        });
-    }
+    this.messageStream = this.brokerStoreService.message();
+    /**
+     * register to store update
+     */
+    this.messageStream
+      .subscribe((item) => {
+        let msg = new MessageBean();
+        msg.id = '' + (this.ids++);
+        msg.topic = item.topic;
+        try {
+          msg.body = JSON.stringify(item.body, null, '  ');
+        } catch (Exc) {
+          msg.body = item.body;
+        }
+        if (this.myMessages.length > 20) {
+          this.myMessages.shift()
+        }
+        this.myMessages.push(msg);
+      });
+  }
 
   ngOnInit() {
   }

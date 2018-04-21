@@ -28,7 +28,7 @@ import { MenuItem } from 'primeng/primeng';
 import { WindowRef } from './service/jarvis-utils.service';
 import { JarvisConfigurationService } from './service/jarvis-configuration.service';
 import { JarvisSecurityService } from './service/jarvis-security.service';
-import { JarvisDataStoreService } from './service/jarvis-data-store.service';
+import { MessageStoreService } from './store/message.store';
 import { ProfileGuard } from './guard/profile.service';
 
 /**
@@ -55,8 +55,8 @@ export class AppComponent implements OnInit {
   public dispHelp: boolean = false;
   public dispMenu: boolean = false;
 
-  public msgs: Message[] = <Message[]> [];
-  public messageObservable: Observable<Message> = new Observable<Message>();
+  public msgs: Message[] = <Message[]>[];
+  protected messageStream: Store<Message>;
 
   public me: MeBean;
   public help: string;
@@ -71,31 +71,21 @@ export class AppComponent implements OnInit {
     private windowRef: WindowRef,
     private configuration: JarvisConfigurationService,
     private jarvisSecurityService: JarvisSecurityService,
-    private jarvisDataStoreService: JarvisDataStoreService,
-    private store: Store<State<Message>>
+    private messageStoreService: MessageStoreService
   ) {
     this.myInnerHeight = windowRef.getWindow();
 
     /**
       * register to store
       */
-    this.messageObservable = this.store.select<Message>('Message');
+    this.messageStream = this.messageStoreService.message();
+
     /**
      * register to store update
      */
-    this.messageObservable
-      .filter(item => {
-        if (item) {
-          if (item.detail && item.severity && item.summary) {
-            return true;
-          }
-          return false
-        } else {
-          return false
-        }
-      })
+    this.messageStream
       .subscribe((item) => {
-        this.msgs.splice(0,this.msgs.length);
+        this.msgs.splice(0, this.msgs.length);
         this.msgs.push(item);
       });
   }

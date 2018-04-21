@@ -14,41 +14,95 @@
  * limitations under the License.
  */
 
+import { Injectable } from '@angular/core';
 import { ActionReducer, Action, State } from '@ngrx/store';
+import { Store } from '@ngrx/store';
+import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
+
 import * as _ from 'lodash';
 
+import { ActionWithPayload } from './action-with-payload';
 import { Message } from 'primeng/primeng';
 
-export const push = 'push';
+/**
+ * states
+ */
+export interface AppState {
+  feature: MessageUiState;
+}
+
+export interface MessageUiState {
+  msg: Message;
+}
+
+/**
+ * actions
+ */
+export class NewUiMessageAction implements ActionWithPayload<Message> {
+  readonly type = 'NewUiMessageAction';
+  constructor(public payload: Message) { }
+}
+
+export type AllMessageUiActions = NewUiMessageAction;
 
 /**
  * main store for this application
  */
-export class MessageStore {
+@Injectable()
+export class MessageStoreService {
 
-    /**
-     * slides reducer
-     * @param state 
-     * @param action 
-     */
-    public static messageReducer(state: Message = <Message> {}, action: Action): Message {
-        switch (action.type) {
-            /**
-             * message incomming
-             */
-            case push:
-                {
-                    let newState = <Message> {};
-                    newState.id = action.payload.id;
-                    newState.severity = action.payload.severity;
-                    newState.summary = action.payload.summary;
-                    newState.detail = action.payload.detail;
-                    return newState;
-                }
+  private getMessage: MemoizedSelector<object, Message>;
 
-            default:
-                return state;
+  /**
+   * 
+   * @param _store constructor
+   */
+  constructor(
+    private _store: Store<MessageUiState>
+  ) {
+    this.getMessage = createSelector(createFeatureSelector<MessageUiState>('message'), (state: MessageUiState) => state.msg);
+  }
+
+  /**
+   * select this store service
+   */
+  public message(): Store<Message> {
+    return this._store.select(this.getMessage);
+  }
+
+  /**
+   * dispatch
+   * @param action dispatch action
+   */
+  public dispatch(action: AllMessageUiActions) {
+    this._store.dispatch(action);
+  }
+
+  /**
+   * metareducer (Cf. https://www.concretepage.com/angular-2/ngrx/ngrx-store-4-angular-5-tutorial)
+   * @param state 
+   * @param action 
+   */
+  public static reducer(state: MessageUiState = { msg: {} }, action: AllMessageUiActions): MessageUiState {
+
+    switch (action.type) {
+      /**
+       * message incomming
+       */
+      case 'NewUiMessageAction':
+        {
+          let newState = <Message>{};
+          newState.id = action.payload.id;
+          newState.severity = action.payload.severity;
+          newState.summary = action.payload.summary;
+          newState.detail = action.payload.detail;
+          return {
+            msg: newState
+          };
         }
-    }
 
+      default:
+        return state;
+    }
+  }
 }

@@ -21,7 +21,6 @@ import { Http, Response, Headers } from '@angular/http';
 
 import { JarvisDefaultResource } from '../interface/jarvis-default-resource';
 import { JarvisSecurityService } from '../service/jarvis-security.service';
-import { JarvisDataStoreService } from '../service/jarvis-data-store.service';
 import { JarvisConfigurationService } from '../service/jarvis-configuration.service';
 
 /**

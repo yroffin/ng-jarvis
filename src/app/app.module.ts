@@ -80,7 +80,6 @@ import { LoggerService } from './service/logger.service';
 import { NavigationGuard } from './guard/navigation.service';
 import { ProfileGuard } from './guard/profile.service';
 
-import { JarvisCanvasService } from './service/jarvis-canvas.service';
 import { JarvisMqttService } from './service/jarvis-mqtt.service';
 import { JarvisSecurityService } from './service/jarvis-security.service';
 import { JarvisConfigurationService } from './service/jarvis-configuration.service';
@@ -97,7 +96,6 @@ import { JarvisDataProcessService } from './service/jarvis-data-process.service'
 import { JarvisDataSnapshotService } from './service/jarvis-data-snapshot.service';
 import { JarvisDataViewService } from './service/jarvis-data-view.service';
 import { JarvisDataRawService } from './service/jarvis-data-raw.service';
-import { JarvisDataStoreService } from './service/jarvis-data-store.service';
 import { JarvisDataDatasourceService } from './service/jarvis-data-datasource.service';
 import { JarvisDataMeasureService } from './service/jarvis-data-measure.service';
 import { JarvisDataModelService } from './service/jarvis-data-model.service';
@@ -129,13 +127,17 @@ import { JarvisDesktopComponent } from './component/jarvis-desktop/jarvis-deskto
 import { JarvisResourceDatasourceComponent } from './component/jarvis-resource-datasource/jarvis-resource-datasource.component';
 import { JarvisMeasureComponent } from './component/jarvis-measure/jarvis-measure.component';
 
-import { BrokerStore } from './store/broker.store';
-import { MessageStore } from './store/message.store';
+/**
+ * stores
+ */
+import { BrokerStoreService } from './store/broker.store';
+import { MessageStoreService } from './store/message.store';
+import { ViewStoreService } from './store/view.store';
+
 import { JarvisServerResourcesComponent } from './component/jarvis-server-resources/jarvis-server-resources.component';
 import { JarvisBrokerComponent } from './component/jarvis-broker/jarvis-broker.component';
 import { JarvisResourceProcessComponent } from './component/jarvis-resource-process/jarvis-resource-process.component';
 import { JarvisResourceModelComponent } from './component/jarvis-resource-model/jarvis-resource-model.component';
-import { JarvisSceneEditorComponent } from './component/jarvis-scene-editor/jarvis-scene-editor.component';
 import { JarvisGraphComponent } from './widget/jarvis-graph/jarvis-graph.component';
 
 /**
@@ -209,7 +211,6 @@ const appRoutes: Routes = [
     JarvisBrokerComponent,
     JarvisResourceProcessComponent,
     JarvisResourceModelComponent,
-    JarvisSceneEditorComponent,
     JarvisGraphComponent
   ],
   entryComponents: [
@@ -277,9 +278,10 @@ const appRoutes: Routes = [
     /**
      * store
      */
-    StoreModule.provideStore({
-      Broker: BrokerStore.brokerReducer,
-      Message: MessageStore.messageReducer
+    StoreModule.forRoot({
+      broker: BrokerStoreService.reducer,
+      message: MessageStoreService.reducer,
+      view: ViewStoreService.reducer
     })
   ],
   providers: [
@@ -302,7 +304,6 @@ const appRoutes: Routes = [
     JarvisDataCronService,
     JarvisDataNotificationService,
     JarvisDataProcessService,
-    JarvisDataStoreService,
     JarvisDataRawService,
     JarvisDataViewService,
     JarvisDataSnapshotService,
@@ -311,7 +312,6 @@ const appRoutes: Routes = [
     JarvisDataMeasureService,
     JarvisDataModelService,
     JarvisMqttService,
-    JarvisCanvasService,
     /**
      * guards
      */
@@ -320,7 +320,13 @@ const appRoutes: Routes = [
     LoggerService,
     JarvisLoaderService,
     JarvisMessageService,
-    ConfirmationService
+    ConfirmationService,
+    /**
+     * store
+     */
+    BrokerStoreService,
+    MessageStoreService,
+    ViewStoreService
   ],
   bootstrap: [AppComponent]
 })

@@ -25,7 +25,6 @@ import { JarvisDataLinkedResource } from './jarvis-data-linked-resource';
 
 import { JarvisSecurityService } from './jarvis-security.service';
 import { JarvisDataDeviceService } from './jarvis-data-device.service';
-import { JarvisDataStoreService } from './jarvis-data-store.service';
 
 import * as _ from 'lodash';
 

@@ -14,43 +14,97 @@
  * limitations under the License.
  */
 
+import { Injectable } from '@angular/core';
 import { ActionReducer, Action, State } from '@ngrx/store';
+import { Store } from '@ngrx/store';
+import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
+
 import * as _ from 'lodash';
 
+import { ActionWithPayload } from './action-with-payload';
 import { MessageBean } from '../model/broker/message-bean';
 
-export const message = 'message';
+/**
+ * states
+ */
+export interface AppState {
+  feature: MessageState;
+}
+
+export interface MessageState {
+  message: MessageBean;
+}
+
+/**
+ * actions
+ */
+export class NewMessageAction implements ActionWithPayload<MessageBean> {
+  readonly type = 'NewMessageAction';
+  constructor(public payload: MessageBean) { }
+}
+
+export type AllMessagesActions = NewMessageAction;
 
 /**
  * main store for this application
  */
-export class BrokerStore {
+@Injectable()
+export class BrokerStoreService {
 
-    /**
-     * slides reducer
-     * @param state 
-     * @param action 
-     */
-    public static brokerReducer(state: MessageBean = new MessageBean(), action: Action): MessageBean {
-        switch (action.type) {
-            /**
-             * message incomming
-             */
-            case message:
-                {
-                    let newState = new MessageBean();
-                    newState.topic = action.payload.topic;
-                    try {
-                        newState.body = JSON.parse(action.payload.body);
-                    } catch(Exc) {
-                        newState.body = action.payload.body;
-                    }
-                    return newState;
-                }
+  private getMessage: MemoizedSelector<object, MessageBean>;
 
-            default:
-                return state;
+  /**
+   * 
+   * @param _store constructor
+   */
+  constructor(
+    private _store: Store<MessageState>
+  ) {
+    this.getMessage = createSelector(createFeatureSelector<MessageState>('broker'), (state: MessageState) => state.message);
+  }
+
+  /**
+   * select this store service
+   */
+  public message(): Store<MessageBean> {
+    return this._store.select(this.getMessage);
+  }
+
+  /**
+   * dispatch
+   * @param action dispatch action
+   */
+  public dispatch(action: AllMessagesActions) {
+    this._store.dispatch(action);
+  }
+
+  /**
+   * metareducer (Cf. https://www.concretepage.com/angular-2/ngrx/ngrx-store-4-angular-5-tutorial)
+   * @param state 
+   * @param action 
+   */
+  public static reducer(state: MessageState = { message: new MessageBean() }, action: AllMessagesActions): MessageState {
+
+    switch (action.type) {
+      /**
+       * message incomming
+       */
+      case 'NewMessageAction':
+        {
+          let newState = new MessageBean();
+          newState.topic = action.payload.topic;
+          try {
+            newState.body = JSON.parse(action.payload.body);
+          } catch (Exc) {
+            newState.body = action.payload.body;
+          }
+          return {
+            message: newState
+          };
         }
-    }
 
+      default:
+        return state;
+    }
+  }
 }

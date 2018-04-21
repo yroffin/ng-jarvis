@@ -22,6 +22,7 @@ import { JarvisMqttService } from '../../service/jarvis-mqtt.service';
 
 import { Observable } from 'rxjs/Observable';
 import { MessageBean } from '../../model/broker/message-bean';
+import { BrokerStoreService } from '../../store/broker.store';
 
 @Component({
   selector: 'app-jarvis-server-resources',
@@ -32,11 +33,12 @@ export class JarvisServerResourcesComponent implements OnInit {
 
   public data: any;
   @ViewChild('chart') chart: UIChart;
-  public messageObservable: Observable<MessageBean> = new Observable<MessageBean>();
+  public messageStream: Store<MessageBean>;
 
   constructor(
     private store: Store<State<MessageBean>>,
-    private mqttService: JarvisMqttService
+    private mqttService: JarvisMqttService,
+    private brokerStoreService: BrokerStoreService
   ) {
     this.data = {
       labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
@@ -95,23 +97,16 @@ export class JarvisServerResourcesComponent implements OnInit {
     /**
       * register to store
       */
-    this.messageObservable = this.store.select<MessageBean>('Broker');
+      this.messageStream = this.brokerStoreService.message();
     /**
      * register to store update
      */
-    this.messageObservable
-      .filter(item => {
-        if (item) {
-          if(item.body && item.body.classname === "SystemIndicator") {
-            return true;
-          }
-          return false
-        } else {
-          return false
-        }
-      })
+    this.messageStream
       .subscribe((item) => {
-        this.data.datasets[0].data.push(item.body.data.committedVirtualMemorySize);
+        if(item.body && item.body.classname === "SystemIndicator") {
+          return;
+        }
+      this.data.datasets[0].data.push(item.body.data.committedVirtualMemorySize);
         this.data.datasets[0].data.shift();
         this.data.datasets[1].data.push(item.body.data.freePhysicalMemorySize);
         this.data.datasets[1].data.shift();
